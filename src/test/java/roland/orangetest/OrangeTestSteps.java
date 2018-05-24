@@ -18,8 +18,8 @@ import cucumber.api.java.en.When;
 
 public class OrangeTestSteps {
 	
-	private ExtentReports report;
-	private ExtentTest test;
+	public ExtentReports report;
+	public ExtentTest test;
 	private WebDriver driver;
 	private OrangeLandingPage landingPage;
 	private OrangeAddEmployeePage addPage;
@@ -33,7 +33,7 @@ public class OrangeTestSteps {
 		
 		//**WARNING** Check Report output is pointing to correct location before running
 		//**WARNING** Will overwrite previous reports
-		report = new ExtentReports("C:\\Users\\Admin\\Java EE\\OrangeTest\\reports\\orange-report.html", true);
+		report = new ExtentReports("C:\\Users\\Admin\\OrangeSiteTest\\reports\\orange-report.html", true);
 		
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
@@ -41,13 +41,11 @@ public class OrangeTestSteps {
 		
 		landingPage = PageFactory.initElements(driver, OrangeLandingPage.class);
 		landingPage.login("Admin", "admin");
-		
-		
 	}
 	
 	@Given("^the Add Employee Tab$")
 	public void the_Add_Employee_Tab() {
-		test = report.startTest("Test Login Feature");
+		test = report.startTest("Orange Test");
 		test.log(LogStatus.INFO, "Accessing add employee page...");
 		driver.get("http://opensource.demo.orangehrmlive.com/index.php/pim/addEmployee");
 		test.log(LogStatus.PASS, "Success");
@@ -59,7 +57,7 @@ public class OrangeTestSteps {
 		addPage = PageFactory.initElements(driver, OrangeAddEmployeePage.class);
 		addPage.enterFirstName("Joe");
 		addPage.enterLastName("Bloggs");
-		addPage.enterEmployeeID("5263");
+		addPage.enterEmployeeID("5266");
 	}
 	
 	@When("^I choose to create Login Details$")
@@ -71,7 +69,7 @@ public class OrangeTestSteps {
 	@When("^I fill out the Login Details correctly$")
 	public void i_fill_out_the_Login_Details_correctly() {
 		test.log(LogStatus.INFO, "Creating login information...");
-		addPage.setUserName("jbloggs2");
+		addPage.setUserName("jbloggs6");
 		addPage.setPassword("password");
 	}
 	
@@ -95,11 +93,14 @@ public class OrangeTestSteps {
 			test.log(LogStatus.FAIL, "Unsuccessful");
 		}
 		assertEquals("Joe Bloggs", detailsPage.getNameField().getText());
+
+		report.endTest(test);
 	}
 	
 	@After
 	public void teardown() {
 		driver.close();
+		report.flush();
 	}
 	
 }
